@@ -3,5 +3,12 @@ python:
    - "3.6"
 
 # command to install dependencies
-install:
-  - pip install -r requirements.txt
+# install:
+#   - pip install -r requirements.txt
+
+# Run tests
+script:
+    - nosetests --with-coverage --cover-package=app && coverage report
+
+after_success:
+  - coveralls
