@@ -28,7 +28,7 @@ class Products(Resource):
         # fetch users input data
         data = request.get_json()
         if not data:
-            return jsonify({"message": "Fields cannot be empty"}) 
+            return jsonify({"response": "Fields cannot be empty"}) 
         id = data['productId']
         category = data['category']
         name = data['name']
