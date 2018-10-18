@@ -52,6 +52,6 @@ class GetSingleSale(Resource):
         """
         for sales in sale:
             if sales['salesId'] == salesId:
-                return jsonify({"sale":sales})
+                return jsonify({"response":sales})
 
-        return jsonify({"message":"Product Not Available"})     
+        return jsonify({"response":"Product Not Available"})     
