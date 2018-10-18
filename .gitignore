@@ -1,7 +1,7 @@
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
-.pyc
+*.pyc
 
 # Unit test / coverage reports
 htmlcov/
