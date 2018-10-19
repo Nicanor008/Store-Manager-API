@@ -8,7 +8,7 @@ python:
 
 # Run tests
 script:
-    - nosetests --with-coverage --cover-package=app && coverage report
+    - nosetests --with-coverage --cover-package=app/tests/v1 && coverage report
 
 after_success:
   - coveralls
