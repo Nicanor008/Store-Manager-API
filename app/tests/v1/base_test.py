@@ -11,7 +11,7 @@ class TestSales(unittest.TestCase):
         self.app.testing = True
         self.client = self.app.test_client()
         
-         self.products = {
+        self.products = {
             "productid":"la01",
             "category":"laptops",
             "name":"Acer Laptop"
