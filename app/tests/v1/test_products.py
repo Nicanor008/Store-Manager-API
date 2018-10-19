@@ -1,21 +1,21 @@
-import unittest 
-import json
-from app import create_app
-from instance.config import app_config
+# import unittest 
+# import json
+# from app import create_app
+# from instance.config import app_config
 
 
-class TestProduct(unittest.TestCase):
+# class TestProduct(unittest.TestCase):
 
-    def setUp(self):
-        # self.app = create_app(config_name="testing")
-        self.app = create_app()
-        self.app.testing = True
-        self.client = self.app.test_client()
-        self.products = {
-            "productId":"la01",
-            "category":"laptops",
-            "name":"Acer Laptop"
-        }
+#     def setUp(self):
+#         # self.app = create_app(config_name="testing")
+#         self.app = create_app()
+#         self.app.testing = True
+#         self.client = self.app.test_client()
+#         self.products = {
+#             "productId":"la01",
+#             "category":"laptops",
+#             "name":"Acer Laptop"
+#         }
 
     # def test_postproduct(self):
     #     with self.client:
