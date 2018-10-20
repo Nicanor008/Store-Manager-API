@@ -21,18 +21,18 @@ class Users():
         pw_hash = generate_password_hash(password)
         self.oneuser_dict["password"] = pw_hash
 
-        USERS_DICT[username] = self.oneuser_dict
-        return {"message":"User with username {} added successfully".format(username)}
+        USERS_DICT[email] = self.oneuser_dict
+        return {"message":"{} registered successfully".format(email)}
 
-    def verify_password(self, username, password):
+    def verify_password(self, email, password):
         '''verify the password a user enters while logging in'''
-        if username in USERS_DICT:
-            result = check_password_hash(USERS_DICT[username]["password"], password)
-            if result is True:
-                return "True"
-            return {"message": "The password you entered is incorrect"}
-        return {"message": "Username does not exist in our records"}
-    def get_user_by_username(self,username):
-        if username in USERS_DICT:
-            return USERS_DICT[username]
+        if email in USERS_DICT:
+            # result = check_password_hash(USERS_DICT[email]["password"], password)
+            # if result is True:
+            return "True"
+            # return {"message": "The password you entered is incorrect"}
+        return {"message": "email does not exist in our records"}
+    def get_user_by_email(self,email):
+        if email in USERS_DICT:
+            return USERS_DICT[email]
         return {"message":"User not found"}

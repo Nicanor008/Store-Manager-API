@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Api
-# from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager
 from instance.config import app_config
+# from app.api.v1.views.users import BLACKLIST
 
 
 def create_app():
@@ -12,5 +13,9 @@ def create_app():
 
     # register the blueprint
     app.register_blueprint(v1)
+
+    app.config['JWT_SECRET_KEY'] = 'thisismysecretkey'
+    jwt = JWTManager(app)
+
 
     return app

@@ -1,5 +1,6 @@
 from flask import Flask, abort, request, make_response, jsonify, Blueprint
 from flask_restful import Resource, Api
+from flask_jwt_extended import (JWTManager, jwt_required, get_jwt_claims)
 from app.api.v1.models.sales import SalesData
 
 # sales list
@@ -7,6 +8,7 @@ sale = SalesData().get_sales()
 
 
 class Sales(Resource):
+    @jwt_required
     def get(self):
         """ 
             Obtain and post sales
@@ -15,7 +17,7 @@ class Sales(Resource):
             'Sales': sale
         })
 
-
+    @jwt_required
     def post(self):
         """create a sale"""
         sales_data = request.get_json()
@@ -44,7 +46,8 @@ class Sales(Resource):
         return jsonify({'response':'New Sale recorded'})
 
 
-class GetSingleSale(Resource):   
+class GetSingleSale(Resource):
+    @jwt_required   
     def get(self, salesId):
         """
             Get only a single sale using saleid

@@ -8,6 +8,7 @@ products=ProductsData().get_products()
    
 
 class Products(Resource):
+    @jwt_required
     def get(self):
         """Fetch all products
             :param - store attendant and store owner
@@ -19,7 +20,7 @@ class Products(Resource):
             }
         ),200)
 
-
+    @jwt_required
     def post(self):
         """post a product to list
             param: admin only
@@ -47,6 +48,7 @@ class Products(Resource):
     
 class GetSingleProduct(Resource):
     ''' fetch a single product '''
+    @jwt_required
     def get(self, productId):
         """Fetch a single product record
             param:
