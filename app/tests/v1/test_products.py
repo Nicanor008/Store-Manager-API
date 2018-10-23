@@ -1,5 +1,5 @@
 import json
-from base_tests import BaseTest
+from .base_tests import BaseTest
 
 class TestProduct(BaseTest):
     # Test fetch product API endpoint and only accessible to admin and owner
