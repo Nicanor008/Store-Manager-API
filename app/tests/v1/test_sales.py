@@ -1,5 +1,5 @@
 import json
-from base_tests import BaseTest
+from app.tests.v1.base_tests import BaseTest
 
 class TestSales(BaseTest):
 
