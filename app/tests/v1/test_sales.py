@@ -1,48 +1,60 @@
-# import unittest 
-# import json
-# from app import create_app
-# from instance.config import app_config
+import json
+from base_tests import BaseTest
 
+class TestSales(BaseTest):
 
-# class TestSales(unittest.TestCase):
-
-#     def setUp(self):
-#         self.app = create_app()
-#         self.app.testing = True
-#         self.client = self.app.test_client()
-#         self.sale = {
-#             "salesId":"sales1", 
-#             "category":"Laptops", 
-#             "product_name":"HP Acer 844C", 
-#             "quantity":1,
-#             "price":1000
-#         }
-
-    # def test_postsale(self):
-    #     with self.client:
-    #         response = self.client.post(
-    #             '/api/v1/sales', 
-    #             data = json.dumps(self.sale),
-    #             headers={'content_type':'application/json'}
-    #         )
-    #         result = json.loads(response.data.decode('utf-8'))
-    #         self.assertEqual(response.status_code, 200, result['response'])
+    # a store attendant should post a sale record
+    def test_postsale(self):
+        with self.client:
+            response = self.client.post(
+                '/api/v1/sales',
+                headers=dict(Authorization = "Bearer " + self.token_attendant), 
+                data = json.dumps(self.sale),
+                content_type='application/json'
+            )
+            result = json.loads(response.data.decode('utf-8'))
+            self.assertEqual(response.status_code, 200, result['response'])
     
-
-    # def test_get_sale(self):
-    #     with self.client:
-    #         response = self.client.get(
-    #             '/api/v1/sales',
-    #             headers={'content_type':'application/json'}
-    #         )
-    #         result = json.loads(response.data.decode('utf-8'))
-    #         self.assertEqual(response.status_code, 200, result['Sales'])
+    # test that a store owner to fetch all sale records
+    def test_get_sale(self):
+        with self.client:
+            response = self.client.get(
+                '/api/v1/sales',
+                headers=dict(Authorization = "Bearer " + self.token_owner), 
+                content_type = 'application/json'
+            )
+            result = json.loads(response.data.decode('utf-8'))
+            self.assertEqual(response.status_code, 200, result['Sales'])
     
-    # def test_getSingleSale(self):
-    #     with self.client:
-    #         response = self.client.get(
-    #             '/api/v1/sales/sales1',
-    #             headers={'content_type':'application/json'}
-    #         )
-    #         result = json.loads(response.data.decode('utf-8'))
-    #         self.assertEqual(response.status_code, 200, result['response'])
+    # test that a store admin to fetch all sale records
+    def test_admin_get_sale(self):
+        with self.client:
+            response = self.client.get(
+                '/api/v1/sales',
+                headers=dict(Authorization = "Bearer " + self.token_admin), 
+                content_type = 'application/json'
+            )
+            result = json.loads(response.data.decode('utf-8'))
+            self.assertEqual(response.status_code, 200, result['Sales'])
+    
+    # test that owner can fetch a single sale
+    def test_owner_getSingleSale(self):
+        with self.client:
+            response = self.client.get(
+                '/api/v1/sales/sales1',
+                headers=dict(Authorization = "Bearer " + self.token_owner), 
+                content_type = 'application/json'
+            )
+            result = json.loads(response.data.decode('utf-8'))
+            self.assertEqual(response.status_code, 200, result['response'])
+
+    # test that owner can fetch a single sale
+    def test_admin_getSingleSale(self):
+        with self.client:
+            response = self.client.get(
+                '/api/v1/sales/sales1',
+                headers=dict(Authorization = "Bearer " + self.token_admin), 
+                content_type = 'application/json'
+            )
+            result = json.loads(response.data.decode('utf-8'))
+            self.assertEqual(response.status_code, 200, result['response'])

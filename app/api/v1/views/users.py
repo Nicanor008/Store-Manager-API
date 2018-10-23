@@ -2,9 +2,9 @@ import re
 from flask import request, jsonify
 from flask_restful import Resource
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token, get_raw_jwt)
-from ..models import auth_models
+from ..models import users
 
-users_list = auth_models.Users()
+users_list = users.Users()
 
 
 class Login(Resource):
@@ -19,16 +19,23 @@ class Login(Resource):
 
         email = data.get('email')
         password = data.get('password')
+        role = data.get('role')
 
+        # if email is not user
+        # if email is not users_list.user_verify
         if not email or not password:
             return jsonify({"message": "Username or password missing"})
 
-        authorize = users_list.verify_password(email, password)
-        user=users_list.get_user_by_email(email)
+        authorize = users_list.user_verify(email, password)
+        user=users_list.get_user(email, role)
 
-        if authorize:
-            access_token = create_access_token(identity=user)
-            return jsonify(token = access_token, message = "Login successful!")
+        if not authorize:
+            return "failed"
+
+        access_token = create_access_token(identity=user)
+        return jsonify(token = access_token, message = "Login successful!")
+        # else:
+            # return "failed"
         
         
         
@@ -38,7 +45,6 @@ class Register(Resource):
         Returns:
             users data in a list
     """
-
     def post(self):
         data = request.get_json()
 
