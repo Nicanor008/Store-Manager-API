@@ -1,5 +1,5 @@
 import json
-from .base_tests import BaseTest
+from base_tests import BaseTest
 
 class TestSales(BaseTest):
 
@@ -14,7 +14,7 @@ class TestSales(BaseTest):
             )
             result = json.loads(response.data.decode('utf-8'))
             self.assertEqual(response.status_code, 200, result['response'])
-    
+
     # test that a store owner to fetch all sale records
     def test_get_sale(self):
         with self.client:
