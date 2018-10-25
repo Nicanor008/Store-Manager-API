@@ -19,6 +19,8 @@ class Login(Resource, User):
         data = request.get_json()
         email = data.get("email")
         password =data.get("password")
+        username = data.get("username")
+        role = data.get("role")
 
         if not data:
             return jsonify("Fields cannot be empty")

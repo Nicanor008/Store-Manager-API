@@ -109,10 +109,10 @@ class TestProduct(BaseTest):
             self.assertEqual(response.status_code, 200, result['response'])
 
     # test if product fetched is not available
-    def test_productNotAvailable(self):
+    def test_SingleproductNotAvailable(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/products/34',
+                '/api/v1/products/1234455',
                 headers=dict(Authorization = "Bearer " + self.token_attendant),
                 content_type='application/json'
             )

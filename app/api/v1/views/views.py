@@ -3,7 +3,6 @@ from flask_restful import Resource, Api
 from flask_jwt_extended import (JWTManager, jwt_required, get_jwt_claims)
 from app.api.v1.models.products import ProductsData, products
    
-
 class Products(Resource):
     @jwt_required
     def get(self):
@@ -45,13 +44,20 @@ class GetSingleProduct(Resource):
             param:
             <int:productId>
         """
-        for product in products:
-            if product['productId'] == int(productId):
-                return jsonify(
-                    {
-                        'response':product
-                    }
-                )
+        try:
+            isinstance(int(productId), int)
+            print('string')
+            for product in products:
+                if product['productId'] == int(productId):
+                    return jsonify(
+                        {
+                            'response':product
+                        }
+                    )
+        except ValueError:
+            print('not string')
+            response = jsonify({'message':'not allowed'})
+            return response
                 # handling  string id
         return jsonify({'response':'Product Not Available'})
 
