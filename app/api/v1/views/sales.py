@@ -1,10 +1,11 @@
 from flask import Flask, abort, request, make_response, jsonify, Blueprint
 from flask_restful import Resource, Api
 from flask_jwt_extended import (JWTManager, jwt_required, get_jwt_claims)
-from app.api.v1.models.sales import SalesData
+from app.api.v1.models.sales import SalesData, sales
+from app.api.v1.models.products import products
 
 # sales list
-sale = SalesData().get_sales()
+# sale = SalesData().get_sales()
 
 
 class Sales(Resource):
@@ -14,7 +15,7 @@ class Sales(Resource):
             Obtain and post sales
         """
         return jsonify({
-            'Sales': sale
+            'Sales': sales
         })
 
     @jwt_required
@@ -22,26 +23,29 @@ class Sales(Resource):
         """create a sale"""
         sales_data = request.get_json()
 
+        if not sales_data:
+            return {"message":"fields cannot be empty"}
+
         # users data entered, stored in variables
-        sales_id = sales_data['salesId']
         category = sales_data['category']
-        sale_name = sales_data['product_name']
+        product_name = sales_data['product_name']
         quantity = sales_data['quantity']
         price = sales_data['price']
         
         # check if product is available in the products list
+        check_product = [product for product in products if product_name == product["product_name"]]
 
-        # store products in a dictionary
-        sales_cart = {
-            "salesId":sales_id, 
-            "category":category, 
-            "product_name":sale_name, 
-            "quantity":quantity,
-            "price":price
-        }
-        # add sale product to the sale list
-        sale.append(sales_cart)
+        if len(check_product) == 0:
+            return jsonify({"message":"Product not available"})
 
+        # check if sale record is as per the product quantity
+        check_product_quantity = [product for product in products if quantity > product["quantity"]]
+
+        if check_product_quantity:
+            return jsonify({"message":"Sale Quantity exceeds the product stock"})
+
+
+        SalesData().save_sale(category, product_name, quantity, price)
         # message to be displayed 
         return jsonify({'response':'New Sale recorded'})
 
@@ -53,8 +57,9 @@ class GetSingleSale(Resource):
             Get only a single sale using saleid
             param : Store Owner/admin and store attendant of the specific sale record
         """
-        for sales in sale:
-            if sales['salesId'] == salesId:
-                return jsonify({"response":sales})
+        for sale in sales:
+            if int(sale['salesId']) == int(salesId):
+                return jsonify({"response":sale})
+            # how to handle non-int
 
-        return jsonify({"response":"Product Not Available"})     
+        return jsonify({"response":"Sale record Not Available"})     

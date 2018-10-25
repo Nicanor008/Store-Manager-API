@@ -13,8 +13,12 @@ class TestProduct(BaseTest):
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
+            self.assertTrue(result['reponse'] ==  'New product added successfully')
             self.assertEqual(response.status_code, 200, result['response'])
 
+        # self.assertTrue(data['message'] == 'Successfully registered.')
+        # self.assertTrue(data['auth_token'])
+        # self.assertTrue(response.content_type == 'application/json')
     # Store Owner to add a product
     def test_owner_postproduct(self):
         with self.client:
@@ -25,6 +29,7 @@ class TestProduct(BaseTest):
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
+            # self.assertTrue(result['reponse'] == 'New product added successfully')
             self.assertEqual(response.status_code, 200, result['response'])
 
     # If a normal attendant tries to add a product, this should fail and prompt a user
@@ -77,7 +82,7 @@ class TestProduct(BaseTest):
     def test_owner_getSingleProduct(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/products/la01',
+                '/api/v1/products/1',
                 headers=dict(Authorization = "Bearer " + self.token_owner),
                 content_type='application/json'
             )
@@ -89,7 +94,7 @@ class TestProduct(BaseTest):
     def test_admin_getSingleProduct(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/products/la01',
+                '/api/v1/products/1',
                 headers=dict(Authorization = "Bearer " + self.token_admin),
                 content_type='application/json'
             )
@@ -105,7 +110,7 @@ class TestProduct(BaseTest):
     def test_attendant_getSingleProduct(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/products/la01',
+                '/api/v1/products/1',
                 headers=dict(Authorization = "Bearer " + self.token_attendant),
                 content_type='application/json'
             )

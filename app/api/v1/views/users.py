@@ -1,4 +1,5 @@
 import re
+from datetime import datetime, timedelta
 from flask import request, jsonify
 from flask_restful import Resource
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token, get_raw_jwt)
@@ -40,6 +41,7 @@ class Login(Resource, User):
             })
         
         access_token = create_access_token(identity=email)
+        expires = datetime.utcnow() + timedelta(minutes=60)
         return jsonify(token = access_token, message = "Login successful!")
         
    
@@ -70,7 +72,7 @@ class Register(Resource, User):
             return jsonify({"message":"Email address already exists"})
 
         else:
-            user.save_user(email,name, password, role)
+            User.save_user(self, email,name, password, role)
             return jsonify({
                 "message":"User has been registered successfully"
             })

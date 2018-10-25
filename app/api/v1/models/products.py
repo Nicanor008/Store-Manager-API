@@ -1,11 +1,20 @@
 
+products = []
+
 class ProductsData():
-    def __init__(self):
-        self.products=[
-            # {"productid":"la01","category":"lappy","name":"HP Spectre 2015" },
-            # {"productid":"laT01","category":"lappy","name":"Toshiba"},
-            # {"productid":"laT03","category":"lappy","name":"Toshiba"}
-        ]
+   def save_product(self, category, product_name, quantity, price):
+       productId = len(products)+1
+       # dictionary data structure for users products
+       users_products = {
+           "productId":productId,
+           "category":category,
+           "product_name":product_name,
+           "quantity":quantity,
+           "price":price
+        }
+       products.append(users_products)
+        # products.append(users_products)
+       return users_products
     
-    def get_products(self):
-        return self.products
+   def get_products(self):
+       return products

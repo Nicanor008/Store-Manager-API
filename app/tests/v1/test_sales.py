@@ -41,7 +41,7 @@ class TestSales(BaseTest):
     def test_owner_getSingleSale(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/sales/sales1',
+                '/api/v1/sales/1',
                 headers=dict(Authorization = "Bearer " + self.token_owner), 
                 content_type = 'application/json'
             )
@@ -52,7 +52,7 @@ class TestSales(BaseTest):
     def test_admin_getSingleSale(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/sales/sales1',
+                '/api/v1/sales/1',
                 headers=dict(Authorization = "Bearer " + self.token_admin), 
                 content_type = 'application/json'
             )

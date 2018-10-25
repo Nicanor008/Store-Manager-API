@@ -1,15 +1,18 @@
 
+sales = []
+
 class SalesData():
-    def __init__(self):
-        self.sale=[
-        #     {
-        #     "salesId":"sales1", 
-        #     "category":"Laptops", 
-        #     "product_name":"HP Acer 844C", 
-        #     "quantity":1,
-        #     "price":1000
-        # }    
-        ]
+    def save_sale(self,category, product_name, quantity, price):
+        salesId = len(sales)+1
+        sales_cart = { 
+            "salesId":salesId,
+            "category":category, 
+            "product_name":product_name, 
+            "quantity":quantity,
+            "price":price
+        }
+        sales.append(sales_cart)
+        return sales_cart
     
     def get_sales(self):
-        return self.sale
+        return sales

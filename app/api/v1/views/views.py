@@ -1,10 +1,7 @@
 from flask import Flask, abort, request, make_response, jsonify, Blueprint
 from flask_restful import Resource, Api
 from flask_jwt_extended import (JWTManager, jwt_required, get_jwt_claims)
-from app.api.v1.models.products import ProductsData
-
-# Products lists
-products=ProductsData().get_products()
+from app.api.v1.models.products import ProductsData, products
    
 
 class Products(Resource):
@@ -30,19 +27,13 @@ class Products(Resource):
         data = request.get_json()
         if not data:
             return jsonify({"response": "Fields cannot be empty"}) 
-        id = data['productId']
-        category = data['category']
-        name = data['name']
+        
+        category = data.get('category')
+        product_name = data.get('product_name')
+        quantity = data.get("quantity")
+        price = data.get('price')
 
-        # dictionary data structure for users products
-        users_products = {
-            "productId":id,
-            "category":category,
-            "name":name
-        }
-        # Store products obtained from the user in a list
-        products.append(users_products)
-
+        ProductsData().save_product(category, product_name, quantity, price)
         # message to be displayed to the user
         return jsonify( {'response':'New product added successfully'})
     
@@ -55,12 +46,13 @@ class GetSingleProduct(Resource):
             <int:productId>
         """
         for product in products:
-            if product['productId'] == productId:
+            if product['productId'] == int(productId):
                 return jsonify(
                     {
                         'response':product
                     }
                 )
+                # handling  string id
         return jsonify({'response':'Product Not Available'})
 
             

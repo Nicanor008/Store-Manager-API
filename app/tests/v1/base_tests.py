@@ -11,12 +11,10 @@ class BaseTest(unittest.TestCase):
         self.app.testing = True
         self.client = self.app.test_client()
         self.products = {
-            "productId":"la01",
             "category":"laptops",
             "name":"Acer Laptop"
         }
         self.sale = {
-            "salesId":"sales1", 
             "category":"Laptops", 
             "product_name":"HP Acer 844C", 
             "quantity":1,
