@@ -13,12 +13,10 @@ class TestProduct(BaseTest):
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
-            self.assertTrue(result['reponse'] ==  'New product added successfully')
-            self.assertEqual(response.status_code, 200, result['response'])
+            self.assertTrue(result['message'] ==  'New product added successfully')
+            self.assertEqual(response.status_code, 200, result['message'])
 
-        # self.assertTrue(data['message'] == 'Successfully registered.')
-        # self.assertTrue(data['auth_token'])
-        # self.assertTrue(response.content_type == 'application/json')
+        
     # Store Owner to add a product
     def test_owner_postproduct(self):
         with self.client:
@@ -29,21 +27,9 @@ class TestProduct(BaseTest):
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
-            # self.assertTrue(result['reponse'] == 'New product added successfully')
-            self.assertEqual(response.status_code, 200, result['response'])
+            self.assertTrue(result['message'] == 'New product added successfully')
+            self.assertEqual(response.status_code, 200, result['message'])
 
-    # If a normal attendant tries to add a product, this should fail and prompt a user
-    # def test_attendant_postproduct(self):
-    #     with self.client:
-    #         response = self.client.post(
-    #             'api/v1/products', 
-    #             headers=dict(Authorization = "Bearer " + self.token_attendant),
-    #             data = json.dumps(self.products),
-    #             content_type='application/json'
-    #         )
-    #         result = json.loads(response.data.decode('utf-8'))
-    #         result[""]
-    #         self.assertEqual(response.status_code, 200, result['response'])
     
     #admin to fetch products 
     def test_admin_get_product(self):
@@ -54,6 +40,7 @@ class TestProduct(BaseTest):
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
+            self.assertTrue(result['Products'] != 'Products')
             self.assertEqual(response.status_code, 200, result['Products'])
 
     #Store attendant to fetch all products 
@@ -65,6 +52,7 @@ class TestProduct(BaseTest):
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
+            self.assertTrue(result['Products'] != 'Products')
             self.assertEqual(response.status_code, 200, result['Products'])
 
     #Store Owner to access products 
@@ -119,3 +107,15 @@ class TestProduct(BaseTest):
             if not res:
                 self.assertEqual(response.status_code, 200, "failed")
             self.assertEqual(response.status_code, 200, result['response'])
+
+    # test if product fetched is not available
+    def test_productNotAvailable(self):
+        with self.client:
+            response = self.client.get(
+                '/api/v1/products/34',
+                headers=dict(Authorization = "Bearer " + self.token_attendant),
+                content_type='application/json'
+            )
+            result = json.loads(response.data.decode('utf-8'))
+            self.assertTrue(result['response'] == 'Product Not Available')
+            self.assertEqual(response.status_code, 200)

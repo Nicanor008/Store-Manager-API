@@ -47,7 +47,7 @@ class Sales(Resource):
 
         SalesData().save_sale(category, product_name, quantity, price)
         # message to be displayed 
-        return jsonify({'response':'New Sale recorded'})
+        return jsonify({'message':'New Sale recorded'})
 
 
 class GetSingleSale(Resource):

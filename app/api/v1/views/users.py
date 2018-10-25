@@ -17,8 +17,8 @@ class Login(Resource, User):
     """
     def post(self):
         data = request.get_json()
-        email = data["email"]
-        password =data["password"]
+        email = data.get("email")
+        password =data.get("password")
 
         if not data:
             return jsonify("Fields cannot be empty")
@@ -41,10 +41,7 @@ class Login(Resource, User):
             })
         
         access_token = create_access_token(identity=email)
-<<<<<<< HEAD
-        expires = datetime.utcnow() + timedelta(minutes=60)
-=======
->>>>>>> fbb9da44416ba2437a0b1e56ed52ab5f83ee63ed
+        # expires = datetime.utcnow() + timedelta(minutes=60)
         return jsonify(token = access_token, message = "Login successful!")
         
    
@@ -56,10 +53,10 @@ class Register(Resource, User):
     def post(self):
         data = request.get_json()
 
-        email = data["email"]
-        password =data["password"]
-        role = data["role"]  
-        name = data["name"]     
+        email = data.get("email")
+        password =data.get("password")
+        role = data.get("role")  
+        name = data.get("name")     
 
         if not data:
             return jsonify("Data must be in json format")
@@ -75,11 +72,8 @@ class Register(Resource, User):
             return jsonify({"message":"Email address already exists"})
 
         else:
-<<<<<<< HEAD
             User.save_user(self, email,name, password, role)
-=======
-            user.save_user(email,name, password, role)
->>>>>>> fbb9da44416ba2437a0b1e56ed52ab5f83ee63ed
+            # user.save_user(email,name, password, role)
             return jsonify({
                 "message":"User has been registered successfully"
             })

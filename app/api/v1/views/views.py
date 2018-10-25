@@ -35,7 +35,7 @@ class Products(Resource):
 
         ProductsData().save_product(category, product_name, quantity, price)
         # message to be displayed to the user
-        return jsonify( {'response':'New product added successfully'})
+        return jsonify( {'message':'New product added successfully'})
     
 class GetSingleProduct(Resource):
     ''' fetch a single product '''

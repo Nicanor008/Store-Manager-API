@@ -13,7 +13,8 @@ class TestSales(BaseTest):
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
-            self.assertEqual(response.status_code, 200, result['response'])
+            self.assertTrue(result['message'] !=  'New Sale recorded') # false coz the list is empty
+            self.assertEqual(response.status_code, 200)
 
     # test that a store owner to fetch all sale records
     def test_get_sale(self):
@@ -46,6 +47,7 @@ class TestSales(BaseTest):
                 content_type = 'application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
+            self.assertTrue(result['response'])            
             self.assertEqual(response.status_code, 200, result['response'])
 
     # test that owner can fetch a single sale
@@ -57,4 +59,5 @@ class TestSales(BaseTest):
                 content_type = 'application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
-            self.assertEqual(response.status_code, 200, result['response'])
+            self.assertTrue(result['response'])
+            self.assertEqual(response.status_code, 200)
