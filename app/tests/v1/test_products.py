@@ -13,7 +13,7 @@ class TestProduct(BaseTest):
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
-            self.assertTrue(result['message'] ==  'New product added successfully')
+            self.assertEqual(result['message'], 'New product added successfully')
             self.assertEqual(response.status_code, 200, result['message'])
 
         

@@ -17,18 +17,24 @@ class Login(Resource, User):
     """
     def post(self):
         data = request.get_json()
+        
         email = data.get("email")
         password =data.get("password")
-        username = data.get("username")
+        first_name = data.get("first_name")
+        last_name = data.get("last_name")
         role = data.get("role")
 
         if not data:
-            return jsonify("Fields cannot be empty")
-        if not email or not password:
-            return jsonify("You must provide username and password")
+            response =  jsonify({"message":"Fields cannot be empty"})
+        elif not email:
+            response =  jsonify({"message":"Email cannot be blank"})
+        elif not password:
+            response =  jsonify({"message":"Password field cannot be blank"})
+
+
             
         if not re.match(email_format, email):
-            return jsonify({"message": "Invalid Email address"})  
+            response = jsonify({"message": "Invalid Email address"})  
 
         user_exists = [user for user in users if email == user["email"]]
 
@@ -42,9 +48,12 @@ class Login(Resource, User):
                 "status": 400
             })
         
+        
         access_token = create_access_token(identity=email)
         # expires = datetime.utcnow() + timedelta(minutes=60)
-        return jsonify(token = access_token, message = "Login successful!")
+        response = jsonify(token = access_token, message = "Login successful!")
+
+        return response
         
    
 

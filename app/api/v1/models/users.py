@@ -1,12 +1,13 @@
 users = []
 
 class User():
-    def save_user(self, email, name, password, role):
+    def save_user(self, email, first_name, last_name, password, role):
         user_id = len(users) + 1
         user = {
             "user_id": user_id,
             "email": email,
-            "name":name,
+            "first_name":first_name,
+            "last_name":last_name,
             "password": password,
             "role": role
         }
