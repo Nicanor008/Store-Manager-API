@@ -11,6 +11,8 @@ email_format = r"(^[a-zA-z0-9_.]+@[a-zA-z0-9-]+\.[a-z]+$)"
 # Users data list
 user = User()
 
+# blacklist = set()
+
 class Login(Resource, User):
     """API endpoint to login the registered users
     Returns jsonify users data
@@ -40,10 +42,10 @@ class Login(Resource, User):
             response =  jsonify({
                 "message":"Wrong password"
             })
-        # else:
-        expires = datetime.timedelta(minutes=60)
-        access_token = create_access_token(identity=email, expires_delta=expires)
-        response = jsonify(token = access_token, message = "Login successful!")
+        else:
+            expires = datetime.timedelta(minutes=60)
+            access_token = create_access_token(identity=email, expires_delta=expires)
+            response = jsonify(token = access_token, message = "Login successful!")
 
         return response
         
@@ -85,3 +87,13 @@ class Register(Resource, User):
                 "message":"User has been registered successfully"
             })
         return response
+
+
+# class Logout(Resource):
+#     @jwt_required
+#     def delete(self):
+#         jti = get_raw_jwt()['jti']
+#         blacklist.add(jti)
+#         return jsonify({"message": "Successfully logged out"}), 200
+
+

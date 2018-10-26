@@ -27,15 +27,15 @@ class Sales(Resource):
             return {"message":"fields cannot be empty"}
 
         # users data entered, stored in variables
-        category = sales_data['category']
-        product_name = sales_data['product_name']
-        quantity = sales_data['quantity']
-        price = sales_data['price']
+        category = sales_data.get('category')
+        product_name = sales_data.get('product_name')
+        quantity = sales_data.get('quantity')
+        price = sales_data.get('price')
         
         # check if product is available in the products list
         check_product = [product for product in products if product_name == product["product_name"]]
 
-        if len(check_product) == 0:
+        if not check_product:
             return jsonify({"message":"Product not available"})
 
         # check if sale record is as per the product quantity
