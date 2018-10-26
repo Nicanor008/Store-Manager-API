@@ -7,7 +7,7 @@ class TestProduct(BaseTest):
     def test_admin_postproduct(self):
         with self.client:
             response = self.client.post(
-                'api/v1/products', 
+                self.products_url, 
                 headers=dict(Authorization = "Bearer " + self.token_admin),
                 data = json.dumps(self.products),
                 content_type='application/json'
@@ -21,7 +21,7 @@ class TestProduct(BaseTest):
     def test_owner_postproduct(self):
         with self.client:
             response = self.client.post(
-                'api/v1/products', 
+                self.products_url, 
                 headers=dict(Authorization = "Bearer " + self.token_owner),
                 data = json.dumps(self.products),
                 content_type='application/json'
@@ -35,42 +35,41 @@ class TestProduct(BaseTest):
     def test_admin_get_product(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/products',
+                self.products_url,
                 headers=dict(Authorization = "Bearer " + self.token_admin),
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
-            self.assertTrue(result['Products'] != 'Products')
-            self.assertEqual(response.status_code, 200, result['Products'])
+            self.assertEqual(response.status_code, 200, result['message'])
 
     #Store attendant to fetch all products 
     def test_attendant_get_product(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/products',
+                self.products_url,
                 headers=dict(Authorization = "Bearer " + self.token_attendant),
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
-            self.assertTrue(result['Products'] != 'Products')
-            self.assertEqual(response.status_code, 200, result['Products'])
+            self.assertTrue(result['message'] != 'Products')
+            self.assertEqual(response.status_code, 200, result['message'])
 
     #Store Owner to access products 
     def test_owner_get_product(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/products',
+                self.products_url,
                 headers=dict(Authorization = "Bearer " + self.token_owner),
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
-            self.assertEqual(response.status_code, 200, result['Products'])
+            self.assertEqual(response.status_code, 200, result['message'])
     
     # Store Owner to fetch a single product 
     def test_owner_getSingleProduct(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/products/1',
+                self.get_single_product,
                 headers=dict(Authorization = "Bearer " + self.token_owner),
                 content_type='application/json'
             )
@@ -82,7 +81,7 @@ class TestProduct(BaseTest):
     def test_admin_getSingleProduct(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/products/1',
+                self.get_single_product,
                 headers=dict(Authorization = "Bearer " + self.token_admin),
                 content_type='application/json'
             )
@@ -98,24 +97,33 @@ class TestProduct(BaseTest):
     def test_attendant_getSingleProduct(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/products/1',
+                self.get_single_product,
                 headers=dict(Authorization = "Bearer " + self.token_attendant),
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
-            res = result.get('productId')
-            if not res:
-                self.assertEqual(response.status_code, 200, "failed")
             self.assertEqual(response.status_code, 200, result['response'])
 
     # test if product fetched is not available
     def test_SingleproductNotAvailable(self):
         with self.client:
             response = self.client.get(
-                '/api/v1/products/1234455',
+                self.get_unavailable_product,
                 headers=dict(Authorization = "Bearer " + self.token_attendant),
                 content_type='application/json'
             )
             result = json.loads(response.data.decode('utf-8'))
             self.assertTrue(result['response'] == 'Product Not Available')
+            self.assertEqual(response.status_code, 200)
+
+     # test if product fetched is not available
+    def test_SingleproductIdIsString(self):
+        with self.client:
+            response = self.client.get(
+                self.get_string_productid,
+                headers=dict(Authorization = "Bearer " + self.token_attendant),
+                content_type='application/json'
+            )
+            result = json.loads(response.data.decode('utf-8'))
+            self.assertEqual(result['message'], 'Product ID should be an integer')
             self.assertEqual(response.status_code, 200)

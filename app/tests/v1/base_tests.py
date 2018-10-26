@@ -20,10 +20,24 @@ class BaseTest(unittest.TestCase):
             "quantity":1,
             "price":1000
         }
+        
+        # users base url
+        self.register_url = '/api/v1/auth/register'
+        self.login_url = '/api/v1/auth/login'
+
+        # base url(s) for products tests
+        self.products_url = 'api/v1/products'
+        self.get_single_product = '/api/v1/products/1'
+        self.get_unavailable_product = '/api/v1/products/12323'
+        self.get_string_productid = '/api/v1/products/sdfs'
+
+        # base url(s) for sales tests
+        self.sales_url = '/api/v1/sales'
+        self.get_single_sale = '/api/v1/sales/1'
 
     # Store Owner register
         self.owner_register = self.client.post(
-            '/api/v1/auth/register',
+            self.register_url,
             data=json.dumps(dict(
                 name="Elsie Chep",
                 username="Eldie",
@@ -47,7 +61,7 @@ class BaseTest(unittest.TestCase):
 
         # Store admin register
         self.admin_register = self.client.post(
-            '/api/v1/auth/register',
+            self.register_url,
             data=json.dumps(dict(
                 name="Nicque Kip",
                 username="nicque",
@@ -71,7 +85,7 @@ class BaseTest(unittest.TestCase):
 
         # Store Attendant registered
         self.attendant_register = self.client.post(
-            '/api/v1/auth/register',
+            self.register_url,
             data=json.dumps(dict(
                 name="Nicanor KK",
                 username="Nic",
@@ -83,7 +97,7 @@ class BaseTest(unittest.TestCase):
         )
         # Store attendant login
         self.attendant_response = self.client.post(  
-            '/api/v1/auth/login',
+            self.login_url,
             data=json.dumps(dict(
                 email='nic@nic.com',
                 password='nicki'  
