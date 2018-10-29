@@ -20,34 +20,48 @@ class BaseTest(unittest.TestCase):
             "quantity":1,
             "price":1000
         }
+        
+        # users base url
+        self.register_url = '/api/v1/auth/register'
+        self.login_url = '/api/v1/auth/login'
 
-    # Store Owner register
-        self.owner_register = self.client.post(
-            '/api/v1/auth/register',
-            data=json.dumps(dict(
-                name="Elsie Chep",
-                username="Eldie",
-                email="elsie@gmail.com",
-                password="elsie",
-                role="owner"
-            )),
-            content_type='application/json'
-        )
-        # Store Owner login
-        self.owner_response = self.client.post(  
-            '/api/v1/auth/login',
-            data=json.dumps(dict(
-                email='elsie@gmail.com',
-                password='elsie'
-            )),
-            content_type='application/json'
-        )
-        result_owner = json.loads(self.owner_response.data.decode('utf-8'))
-        self.token_owner = result_owner["token"]
+        # base url(s) for products tests
+        self.products_url = '/api/v1/products'
+        self.get_single_product = '/api/v1/products/1'
+        self.get_unavailable_product = '/api/v1/products/12323'
+        self.get_string_productid = '/api/v1/products/sdfs'
+
+        # base url(s) for sales tests
+        self.sales_url = '/api/v1/sales'
+        self.get_single_sale = '/api/v1/sales/1'
+
+    # # Store Owner register
+    #     self.owner_register = self.client.post(
+    #         self.register_url,
+    #         data=json.dumps(dict(
+    #             name="Elsie Chep",
+    #             username="Eldie",
+    #             email="elsie@gmail.com",
+    #             password="elsie",
+    #             role="owner"
+    #         )),
+    #         content_type='application/json'
+    #     )
+        # # Store Owner login
+        # self.owner_response = self.client.post(  
+        #     self.login_url,
+        #     data=json.dumps(dict(
+        #         email='elsie@gmail.com',
+        #         password='elsie'
+        #     )),
+        #     content_type='application/json'
+        # )
+        # result_owner = json.loads(self.owner_response.data.decode('utf-8'))
+        # self.token_owner = result_owner['token']
 
         # Store admin register
         self.admin_register = self.client.post(
-            '/api/v1/auth/register',
+            self.register_url,
             data=json.dumps(dict(
                 name="Nicque Kip",
                 username="nicque",
@@ -59,19 +73,20 @@ class BaseTest(unittest.TestCase):
         )
         # Store admin login
         self.admin_response = self.client.post(  
-            '/api/v1/auth/login',
-            data=json.dumps(dict(
-                email='nicque@nic.com',
-                password='nicque'
-            )),
+            self.login_url,
+            data=json.dumps({
+                'email':'nicque@nic.com',
+                'password':'nicque'
+            }),
             content_type='application/json'
         )
         result_admin = json.loads(self.admin_response.data.decode('utf-8'))
-        self.token_admin = result_admin["token"]
+        self.token_admin = result_admin.get("token")
+        # self.token_admin = result_admin["token"]
 
         # Store Attendant registered
         self.attendant_register = self.client.post(
-            '/api/v1/auth/register',
+            self.register_url,
             data=json.dumps(dict(
                 name="Nicanor KK",
                 username="Nic",
@@ -83,13 +98,14 @@ class BaseTest(unittest.TestCase):
         )
         # Store attendant login
         self.attendant_response = self.client.post(  
-            '/api/v1/auth/login',
+            self.login_url,
             data=json.dumps(dict(
                 email='nic@nic.com',
                 password='nicki'  
             )),
             content_type='application/json'
         )
-        result_attendant = json.loads(self.admin_response.data.decode('utf-8'))
-        self.token_attendant = result_attendant["token"]
+        result_attendant = json.loads(self.attendant_register.data.decode('utf-8'))
+        self.token_attendant = result_attendant.get("token")
+        # self.token_attendant = result_attendant["token"]
         
