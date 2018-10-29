@@ -28,16 +28,21 @@ class Products(Resource):
         # fetch users input data
         data = request.get_json()
         if not data:
-            response = jsonify({"response": "Fields cannot be empty"}) 
+            response = jsonify({"message": "Fields cannot be empty"}) 
         
         category = data.get('category')
         product_name = data.get('product_name')
         quantity = data.get("quantity")
         price = data.get('price')
 
+        # user must be an admin
+        claims = get_jwt_claims()
+        if claims['role'] != "admin":
+            return jsonify({"message": "Sorry, you don't have administrator rights"})
+
         ProductsData().save_product(category, product_name, quantity, price)
         # message to be displayed to the user
-        response = jsonify( {'message':'New product added successfully'})
+        response = jsonify( {'response':'New product added successfully'})
 
         return response
     

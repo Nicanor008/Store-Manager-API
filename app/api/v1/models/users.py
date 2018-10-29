@@ -15,4 +15,11 @@ class User():
         users.append(user)
         return user    
 
+    def get_user(self, email):
+        """return user"""
+        for user in users:
+            if user['email'] == email:
+                return user
+        # pass
+
     

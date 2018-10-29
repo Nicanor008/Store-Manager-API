@@ -26,7 +26,7 @@ class BaseTest(unittest.TestCase):
         self.login_url = '/api/v1/auth/login'
 
         # base url(s) for products tests
-        self.products_url = 'api/v1/products'
+        self.products_url = '/api/v1/products'
         self.get_single_product = '/api/v1/products/1'
         self.get_unavailable_product = '/api/v1/products/12323'
         self.get_string_productid = '/api/v1/products/sdfs'
@@ -35,29 +35,29 @@ class BaseTest(unittest.TestCase):
         self.sales_url = '/api/v1/sales'
         self.get_single_sale = '/api/v1/sales/1'
 
-    # Store Owner register
-        self.owner_register = self.client.post(
-            self.register_url,
-            data=json.dumps(dict(
-                name="Elsie Chep",
-                username="Eldie",
-                email="elsie@gmail.com",
-                password="elsie",
-                role="owner"
-            )),
-            content_type='application/json'
-        )
-        # Store Owner login
-        self.owner_response = self.client.post(  
-            '/api/v1/auth/login',
-            data=json.dumps(dict(
-                email='elsie@gmail.com',
-                password='elsie'
-            )),
-            content_type='application/json'
-        )
-        result_owner = json.loads(self.owner_response.data.decode('utf-8'))
-        self.token_owner = result_owner["token"]
+    # # Store Owner register
+    #     self.owner_register = self.client.post(
+    #         self.register_url,
+    #         data=json.dumps(dict(
+    #             name="Elsie Chep",
+    #             username="Eldie",
+    #             email="elsie@gmail.com",
+    #             password="elsie",
+    #             role="owner"
+    #         )),
+    #         content_type='application/json'
+    #     )
+        # # Store Owner login
+        # self.owner_response = self.client.post(  
+        #     self.login_url,
+        #     data=json.dumps(dict(
+        #         email='elsie@gmail.com',
+        #         password='elsie'
+        #     )),
+        #     content_type='application/json'
+        # )
+        # result_owner = json.loads(self.owner_response.data.decode('utf-8'))
+        # self.token_owner = result_owner['token']
 
         # Store admin register
         self.admin_register = self.client.post(
@@ -73,15 +73,16 @@ class BaseTest(unittest.TestCase):
         )
         # Store admin login
         self.admin_response = self.client.post(  
-            '/api/v1/auth/login',
-            data=json.dumps(dict(
-                email='nicque@nic.com',
-                password='nicque'
-            )),
+            self.login_url,
+            data=json.dumps({
+                'email':'nicque@nic.com',
+                'password':'nicque'
+            }),
             content_type='application/json'
         )
         result_admin = json.loads(self.admin_response.data.decode('utf-8'))
-        self.token_admin = result_admin["token"]
+        self.token_admin = result_admin.get("token")
+        # self.token_admin = result_admin["token"]
 
         # Store Attendant registered
         self.attendant_register = self.client.post(
@@ -104,6 +105,7 @@ class BaseTest(unittest.TestCase):
             )),
             content_type='application/json'
         )
-        result_attendant = json.loads(self.admin_response.data.decode('utf-8'))
-        self.token_attendant = result_attendant["token"]
+        result_attendant = json.loads(self.attendant_register.data.decode('utf-8'))
+        self.token_attendant = result_attendant.get("token")
+        # self.token_attendant = result_attendant["token"]
         

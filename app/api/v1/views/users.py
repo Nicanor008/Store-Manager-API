@@ -22,7 +22,7 @@ class Login(Resource, User):
         
         email = data.get("email")
         password =data.get("password")
-        role = data.get("role")
+        # role = data.get("role")
 
         user_exists = [user for user in users if email == user["email"]]
 
@@ -43,9 +43,10 @@ class Login(Resource, User):
                 "message":"Wrong password"
             })
         else:
+            current_user = user.get_user(email)
             expires = datetime.timedelta(minutes=60)
-            access_token = create_access_token(identity=email, expires_delta=expires)
-            response = jsonify(token = access_token, message = "Login successful!")
+            access_token = create_access_token(identity=current_user, expires_delta=expires)
+            response = jsonify(token=access_token, message="Login successful!")
 
         return response
         

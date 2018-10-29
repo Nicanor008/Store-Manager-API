@@ -18,3 +18,8 @@ class ProductsData():
     
    def get_products(self):
        return products
+
+#    def update_update(self, productid):
+#        for product in products:
+#            if product['productid'] == productid:
+               
